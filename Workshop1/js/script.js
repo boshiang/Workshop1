@@ -6,7 +6,29 @@ var bookCategoryList = [
     { text: "家庭保健", value: "home", src: "image/home.jpg" },
     { text: "語言", value: "language", src: "image/language.jpg" }
 ];
+function translate() {
+    bookDataFromLocalStorage = JSON.parse(localStorage.getItem('bookData'));
+    for (var i = 0; i < bookDataFromLocalStorage.length; i++) {
+        for (var j = 0; j < bookCategoryList.length; j++) {
+            if (bookDataFromLocalStorage[i].BookCategory == bookCategoryList[j].value ) {
+                bookDataFromLocalStorage[i].BookCategory = bookCategoryList[j].text;
+            }
+        }
+        if (bookDataFromLocalStorage[i].hasOwnProperty("BookDeliveredDate")) {
+            console.log(bookDataFromLocalStorage[i].BookDeliveredDate);
+            // bookDataFromLocalStorage[i].BookDeliveredDate.show();
+        }
+    }
+};
 
+function DeleteDetails(e) {
+    e.preventDefault();
+    var dataItem = this.dataItem($(e.target).closest("tr"));
+    var dataSource = $("#book_grid").data("kendoGrid").dataSource;
+    kendo.confirm("確定刪除「" + dataItem.BookName + "」 嗎?").then(function () {
+        dataSource.remove(dataItem);
+    });
+};
 // 載入書籍資料
 function loadBookData() {
     bookDataFromLocalStorage = JSON.parse(localStorage.getItem('bookData'));
@@ -14,8 +36,9 @@ function loadBookData() {
         bookDataFromLocalStorage = bookData;
         localStorage.setItem('bookData', JSON.stringify(bookDataFromLocalStorage));
     } else {
+        translate();
         //console.log(bookDataFromLocalStorage.length);
-        $("#products").kendoMultiSelect({
+        /*$("#products").kendoMultiSelect({
             placeholder: "Select products...",
             dataTextField: "BookName",
             dataValueField: "BookAuthor",
@@ -23,11 +46,11 @@ function loadBookData() {
             dataSource: {
                 data: bookData
             }
-        });
+        });*/
         kendo.culture("zh-TW");
         $("#book_grid").kendoGrid({
             dataSource: {
-                data: bookData,
+                data: bookDataFromLocalStorage,
                 schema: {
                     model: {
                         fields: {
@@ -36,15 +59,13 @@ function loadBookData() {
                             BookCategory: { type: "string" },
                             BookAuthor: { type: "string" },
                             BookBoughtDate: { type: "date" },
-                            BookDeliveredDate: { type: "boolean" },
+                            BookDeliveredDate: { type: "string"}, 
                             BookPrice: { type: "number" },
                             BookAmount: { type: "number" },
                             BookTotal: { type: "number" }
                         }
                     }
                 },
-                serverPaging: true,
-                serverFiltering: true,
                 pageSize: 20
             },
             height: 550,
@@ -52,15 +73,18 @@ function loadBookData() {
             sortable: true, // 排序
             pageable: {
                 input: true,
-                numeric: false,
-                //refresh: false,
-                //pageSizes: false, // 下方按鈕
-                //buttonCount: 5,
+                numeric: false
             },
             columns: [
                 {
+                    command: [{
+                        text: "刪除",
+                        click: DeleteDetails
+                    }]
+                },
+                {
                     field: "BookId",
-                    title: "書籍編號",
+                    title: "書籍編號"
                 }, {
                     field: "BookName",
                     title: "書籍名稱"
@@ -76,21 +100,30 @@ function loadBookData() {
                     format: "{0: yyyy-MM-dd}"
                 }, {
                     field: "BookDeliveredDate",
-                    title: "送達狀態"
+                    title: "送達狀態",
+                    template: "#if(BookDeliveredDate != null){#<i class='fas fa-ambulance'></i>#}#"
                 }, {
                     field: "BookPrice",
-                    title: "金額"
+                    title: "金額",
+                    attributes: {
+                        style: "text-align: right"
+                    }
                 }, {
                     field: "BookAmount",
-                    title: "數量"
+                    title: "數量",
+                    attributes: {
+                        style: "text-align: right"
+                    }
                 }, {
                     field: "BookTotal",
                     title: "總計",
                     format: "{0:n0}元"
                 }]
         });
-    }
-}
+    };
+};
+
+
 
 $(function () {
     loadBookData();
