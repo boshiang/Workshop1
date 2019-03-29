@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/uikit.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/fontawesome.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <title>圖書館</title>
 </head>
@@ -22,7 +23,7 @@
     </header>
     <main>
         <div class="uk-container align-center">
-            <div class="uk-card uk-text-left uk-width-1-3">
+            <div class="uk-card uk-text-left" id="window" style="display:none">
                 <form id="book_form">
                     <ul class="fieldlist">
                         <li>
@@ -30,36 +31,36 @@
                         </li>
                         <li>
                             <label class="required">圖書類別</label>
-                            <select id="book_category"></select>
+                            <select id="book_category" style="width:100%"></select>
                         </li>
                         <li>
                             <label class="required">書名</label>
-                            <input id="book_name" type="text" />
+                            <input id="book_name" type="text" class="k-textbox" name="book_name" style="width:100%" required validationMessage="這是必填欄位" />
                         </li>
                         <li>
                             <label class="required">作者</label>
-                            <input id="book_author" type="text" />
+                            <input id="book_author" type="text" class="k-textbox" name="book_author" style="width:100%" required validationMessage="這是必填欄位" />
                         </li>
                         <li>
                             <label class="required">購買日期</label>
-                            <input id="bought_datepicker" />
+                            <input id="bought_datepicker" data-role='datepicker'name="bought_datepicker" style="width:100%" data-type="date" required="required"/>
                         </li>
                         <li>
                             <label>送達日期</label>
-                            <input id="delivered_datepicker" />
+                            <input id="delivered_datepicker" data-role='datepicker' data-type="date" name="delivered_datepicker" style="width:100%" data-greaterdate-field="bought_datepicker" data-greaterdate-msg='時間不得早於購買日期'/>
                         </li>
                         <li>
                             <label class="required">金額</label>
-                            <input id="book_price" type="text" />
+                            <input id="book_price" name="book_price" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位"/>
                         </li>
                         <li>
                             <label class="required">數量</label>
-                            <input id="book_amount" type="text" />
+                            <input id="book_amount" name="book_amount" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位"/>
                         </li>
                         <li>
-                            <span>
+                            <span style="float:right;">
                                 總計&nbsp;<span id="book_total">0</span> 元
-                            </span>
+                            </span><br>
                         </li>
                         <li class="uk-text-right">
                             <button type="button" class="k-button k-primary btn-add-book" id="save_book">新增</button>
@@ -67,6 +68,7 @@
                     </ul>
                 </form>
             </div>
+
             <button type="button" id="add_book" class="k-button k-primary btn-add-book">新增書籍</button>
             <!--<select id="products"></select>-->
             <div id="book_grid"></div>
