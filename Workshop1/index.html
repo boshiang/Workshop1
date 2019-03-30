@@ -43,19 +43,19 @@
                         </li>
                         <li>
                             <label class="required">購買日期</label>
-                            <input id="bought_datepicker" data-role='datepicker'name="bought_datepicker" style="width:100%" data-type="date" required="required"/>
+                            <input id="bought_datepicker" data-role='datepicker' name="bought_datepicker" style="width:100%" data-type="date" required="required" />
                         </li>
                         <li>
                             <label>送達日期</label>
-                            <input id="delivered_datepicker" data-role='datepicker' data-type="date" name="delivered_datepicker" style="width:100%" data-greaterdate-field="bought_datepicker" data-greaterdate-msg='時間不得早於購買日期'/>
+                            <input id="delivered_datepicker" data-role='datepicker' data-type="date" name="delivered_datepicker" style="width:100%" data-greaterdate-field="bought_datepicker" data-greaterdate-msg='時間不得早於購買日期' />
                         </li>
                         <li>
                             <label class="required">金額</label>
-                            <input id="book_price" name="book_price" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位"/>
+                            <input id="book_price" name="book_price" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位" />
                         </li>
                         <li>
                             <label class="required">數量</label>
-                            <input id="book_amount" name="book_amount" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位"/>
+                            <input id="book_amount" name="book_amount" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位" />
                         </li>
                         <li>
                             <span style="float:right;">
@@ -69,8 +69,9 @@
                 </form>
             </div>
 
-            <button type="button" id="add_book" class="k-button k-primary btn-add-book">新增書籍</button>
+            <button type="button" id="add_book" class="k-button k-primary btn-add-book">新增書籍</button><br>
             <!--<select id="products"></select>-->
+            <input id="autocomplete" class='k-textbox' placeholder="我想要找..." style="width:600px" />
             <div id="book_grid"></div>
         </div>
     </main>

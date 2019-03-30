@@ -6,11 +6,17 @@ var bookCategoryList = [
     { text: "家庭保健", value: "home", src: "image/home.jpg" },
     { text: "語言", value: "language", src: "image/language.jpg" }
 ];
-$(document).ready(function () {
-    Translate();
-    Insert();
-    Dogrid();
-})
+/*$("#autocomplete").kendoAutoComplete({
+    placeholder: "我想要找...",
+    filter: "contains",
+    dataSource: {
+        data: bookData
+    },
+    dataTextField: "BookName",
+    template: '<span>#: BookName #    #: BookAuthor #</span>',
+    select: onSelect
+});*/
+
 function Dogrid() {
     kendo.culture("zh-TW");
     $("#book_grid").kendoGrid({
@@ -19,7 +25,7 @@ function Dogrid() {
             schema: {
                 model: {
                     fields: {
-                        BookId: { type: "number" },
+                        BookId: {type: "number"},
                         BookName: { type: "string" },
                         BookCategory: { type: "string" },
                         BookAuthor: { type: "string" },
@@ -45,52 +51,86 @@ function Dogrid() {
                 command: [{
                     text: "刪除",
                     click: DeleteDetails
-                }]
+                }],
+                width: 100
             },
             {
                 field: "BookId",
-                title: "書籍編號"
+                title: "書籍<br>編號",
+                width: 80
             }, {
                 field: "BookName",
-                title: "書籍名稱"
+                title: "書籍<br>名稱",
+                width: 200
             }, {
                 field: "BookCategory",
-                title: "書籍種類"
+                title: "書籍<br>種類",
+                width: 100
             }, {
                 field: "BookAuthor",
-                title: "作者"
+                title: "作者",
+                width: 150
             }, {
                 field: "BookBoughtDate",
-                title: "購買日期",
-                format: "{0: yyyy-MM-dd}"
+                title: "購買<br>日期",
+                format: "{0: yyyy-MM-dd}",
+                width: 150
             }, {
                 field: "BookDeliveredDate",
-                title: "送達狀態",
-                template: "#if(BookDeliveredDate != null){#<i class='fas fa-ambulance' id='icon' onmouseover='Domouseover(this)'></i>#}#"
+                title: "送達<br>狀態",
+                template: "#if(BookDeliveredDate != null){#<i class='fas fa-truck' id='icon' onmouseover='Domouseover(this)'></i>#}#",
+                width: 100
             }, {
                 field: "BookPrice",
                 title: "金額",
                 attributes: {
                     style: "text-align: right"
-                }
+                },
+                width: 100
             }, {
                 field: "BookAmount",
                 title: "數量",
                 attributes: {
                     style: "text-align: right"
-                }
+                },
+                width: 100
             }, {
                 field: "BookTotal",
                 title: "總計",
-                format: "{0:n0}元"
+                format: "{0:n0}元",
+                width: 100
             }]
     });
+
+    $('#autocomplete').on('input', function (e) {
+        //console.log(e);
+        var grid = $('#book_grid').data('kendoGrid');
+        var columns = grid.columns;
+        var filter = { logic: 'or', filters: [] };
+        //console.log(e.currentTarget.value);
+        columns.forEach(function (x) {
+            //console.log(x);
+            if (x.field) {
+                var type = grid.dataSource.options.schema.model.fields[x.field].type;
+                if (type == 'string') {
+                    filter.filters.push({
+                        field: x.field,
+                        operator: 'contains',
+                        value: e.target.value
+                    })
+                }
+            }
+        });
+        grid.dataSource.filter(filter);
+    });
+
 };
 
 function Domouseover(e) {
     var dataSource = $("#book_grid").data("kendoGrid");
     var dataItem = dataSource.dataItem($(e).closest("tr"));
-    $("i").kendoTooltip({
+    $("#book_grid").kendoTooltip({
+        filter: "i",
         animation: false,
         content: function (e) {
             return dataItem.BookDeliveredDate;
@@ -241,4 +281,7 @@ function loadBookData() {
 
 $(function () {
     loadBookData();
+    Translate();
+    Insert();
+    Dogrid();
 });
