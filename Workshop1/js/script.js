@@ -46,6 +46,9 @@ function Dogrid() {
             input: true,
             numeric: false
         },
+        toolbar: [
+            { template: kendo.template($("#template").html()) }
+        ],
         columns: [
             {
                 command: [{
@@ -101,31 +104,29 @@ function Dogrid() {
                 width: 100
             }]
     });
-
-    $('#autocomplete').on('input', function (e) {
-        //console.log(e);
-        var grid = $('#book_grid').data('kendoGrid');
-        var columns = grid.columns;
-        var filter = { logic: 'or', filters: [] };
-        //console.log(e.currentTarget.value);
-        columns.forEach(function (x) {
-            //console.log(x);
-            if (x.field) {
-                var type = grid.dataSource.options.schema.model.fields[x.field].type;
-                if (type == 'string') {
-                    filter.filters.push({
-                        field: x.field,
-                        operator: 'contains',
-                        value: e.target.value
-                    })
+    //尋找過濾條件{書籍名稱} {作者}
+    $("#searchBox").keyup(function () {
+        var searchValue = $('#searchBox').val();
+        $("#book_grid").data("kendoGrid").dataSource.filter({
+            logic: "or",
+            filters: [
+                {
+                    field: "BookName",
+                    operator: "contains",
+                    value: searchValue
+                },
+                {
+                    field: "BookAuthor",
+                    operator: "contains",
+                    value: searchValue
                 }
-            }
+            ]
         });
-        grid.dataSource.filter(filter);
     });
 
-};
 
+};
+//Icon 滑鼠移過事件
 function Domouseover(e) {
     var dataSource = $("#book_grid").data("kendoGrid");
     var dataItem = dataSource.dataItem($(e).closest("tr"));
@@ -138,6 +139,7 @@ function Domouseover(e) {
     });
     console.log(dataItem.BookDeliveredDate);
 };
+//書籍種類翻譯
 function Translate() {
     for (var i = 0; i < bookData.length; i++) {
         for (var j = 0; j < bookCategoryList.length; j++) {
@@ -147,7 +149,7 @@ function Translate() {
         }
     }
 };
-//Delete row
+//刪除行
 function DeleteDetails(e) {
     e.preventDefault();
     var dataItem = this.dataItem($(e.target).closest("tr"));
@@ -156,7 +158,7 @@ function DeleteDetails(e) {
         dataSource.remove(dataItem);
     });
 };
-//
+//送達日期不得早於出貨日期
 function Check_date() {
     var container = $("#book_form");
     kendo.init(container);
@@ -175,7 +177,7 @@ function Check_date() {
         }
     });
 }
-//insert data
+//新增書籍介面
 function Insert() {
     //Validator();
     var validatable = $("#book_form").kendoValidator().data("kendoValidator");
@@ -247,20 +249,56 @@ function Insert() {
                 } else {
                     document.getElementById("book_total").innerHTML = 0;
                 }
-                
             }
         });
-        
+        Insert_Data();
 
-        /*$("#save_book").click(function () {
-            var validator = $("#book_form").data("kendoValidator");
-            if (validator.validate()) {
-                alert("Employee Saved");
-            }
-        });*/
         
     });
 }
+//新增書籍資料
+function Insert_Data() {
+    $("#save_book").click(function () {
+        var validator = $("#book_form").data("kendoValidator");
+        var book_name = $("#book_name").val();
+        var book_category = $("#book_category").val();
+        var book_author = $("#book_author").val();
+        if ($("#bought_datepicker").val() == "") {
+            var bought_datepicker = ""
+        } else {
+            var bought_datepicker = $("#bought_datepicker").val();
+        }
+        if ($("#delivered_datepicker").val() == '') {
+            var delivered_datepicker = null;
+        } else {
+            var delivered_datepicker = $("#delivered_datepicker").val();
+        }
+        var book_price = $("#book_price").val();
+        var book_amount = $("#book_amount").val();
+        var book_total = parseInt(book_price) * parseInt(book_amount);
+        console.log(book_total);
+        if (validator.validate()) {
+            var data = $("#book_grid").data("kendoGrid").dataSource;
+            data.add({
+                //BookId: 73,
+                BookName: book_name,
+                BookCategory: book_category,
+                BookAuthor: book_author,
+                BookBoughtDate: bought_datepicker,
+                BookDeliveredDate: delivered_datepicker,
+                BookPrice: book_price,
+                BookAmount: book_amount,
+                BookTotal: book_total
+            });
+            // save the created data item
+            data.sync();
+            alert("新增成功");
+        } else {
+            alert('新增失敗');
+        }
+    });
+}
+//計算總計金額
 function Total() {
     var price = $("#book_price").val();
     var amount = $("#book_amount").val();

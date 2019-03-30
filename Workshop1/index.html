@@ -71,7 +71,11 @@
 
             <button type="button" id="add_book" class="k-button k-primary btn-add-book">新增書籍</button><br>
             <!--<select id="products"></select>-->
-            <input id="autocomplete" class='k-textbox' placeholder="我想要找..." style="width:600px" />
+            <script id="template" type="text/x-kendo-template">
+                <label class="search-label" for="searchBox"> </label>
+                <input id="searchBox" type="search" class='k-textbox' placeholder="我想要找..." style="width:600px" />
+            </script>
+
             <div id="book_grid"></div>
         </div>
     </main>
