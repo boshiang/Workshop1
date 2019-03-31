@@ -793,7 +793,7 @@ var bookData = [
       "BookTotal":1673
    },
    {
-      "BookId":71,
+      "BookId":70,
       "BookCategory":"database",
       "BookName":"雲端策略",
       "BookAuthor":"陳瀅等著",
@@ -804,7 +804,7 @@ var bookData = [
       "BookTotal":414
    },
    {
-      "BookId":70,
+      "BookId":71,
       "BookCategory":"database",
       "BookName":"雲端運算投資攻略",
       "BookAuthor":"Steve Waterhouse",
