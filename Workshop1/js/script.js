@@ -168,6 +168,7 @@ function DeleteDetails(e) {
         }
         bookDataFromLocalStorage = JSON.stringify(delete_jsonObj);
         localStorage.setItem("bookData", bookDataFromLocalStorage);
+        console.log(bookDataFromLocalStorage);
     });
 };
 //送達日期不得早於出貨日期
@@ -239,6 +240,7 @@ function Insert() {
 
     $("#add_book").click(function () {
         document.getElementById("book_form").reset();
+        var validator = $("#book_form").data("kendoValidator");
         $("#bought_datepicker").kendoDatePicker({
             value: new Date(),
             format: "yyyy-MM-dd",
@@ -294,14 +296,13 @@ function Insert_Data() {
         var book_price = $("#book_price").val();
         var book_amount = $("#book_amount").val();
         var book_total = parseInt(book_price) * parseInt(book_amount);
+
+        bookDataFromLocalStorage = JSON.parse(localStorage.getItem('bookData'));
+        var book_id = Object.keys(bookDataFromLocalStorage).map(function (_) { return bookDataFromLocalStorage[_]; });
         if (validator.validate()) {
             var data = $("#book_grid").data("kendoGrid").dataSource;
-            var insert_json = localStorage.getItem("bookData");
-            var insert_jsonObj = JSON.parse(insert_json); //obj
-            var book_id = Object.keys(bookDataFromLocalStorage).map(function (_) { return bookDataFromLocalStorage[_]; });
-            //console.log(bookDataFromLocalStorage[book_id.length-1].BookId);
             var data_add = data.add({
-                //BookId: book_id.length+1,
+                BookId: book_id[length].BookId +1,
                 BookName: book_name,
                 BookCategory: book_category,
                 BookAuthor: book_author,
@@ -313,6 +314,8 @@ function Insert_Data() {
             });
             data.sync();
             //save to localstorage
+            var insert_json = localStorage.getItem("bookData");
+            var insert_jsonObj = JSON.parse(insert_json); //obj
             insert_jsonObj.push(data_add);
             bookDataFromLocalStorage = JSON.stringify(insert_jsonObj);
             localStorage.setItem("bookData", bookDataFromLocalStorage);

@@ -43,7 +43,7 @@
                         </li>
                         <li>
                             <label class="required">購買日期</label>
-                            <input id="bought_datepicker" data-role='datepicker' name="bought_datepicker" style="width:100%" data-type="date" required="required" />
+                            <input id="bought_datepicker" data-role='datepicker' name="bought_datepicker" style="width:100%" data-type="date" required validationMessage="請輸入正確日期" />
                         </li>
                         <li>
                             <label>送達日期</label>
@@ -70,7 +70,7 @@
             </div>
 
             <button type="button" id="add_book" class="k-button k-primary btn-add-book">新增書籍</button><br>
-            <button type="button" id="clear_localstorage" class="k-button k-primary">清除localstorage</button><br>
+            <!--<button type="button" id="clear_localstorage" class="k-button k-primary">清除localstorage</button><br>-->
             <!--<select id="products"></select>-->
             <script id="template" type="text/x-kendo-template">
                 <label class="search-label" for="searchBox"> </label>
