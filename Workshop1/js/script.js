@@ -15,11 +15,11 @@ function loadBookData() {
     }
 };
 
-//清除localstorage
+/*清除localstorage
 $("#clear_localstorage").click(function () {
     localStorage.clear(); //clear the local storage
     alert("Local storage is cleared. Please reload the page!");
-});
+});*/
 
 function Dogrid() {
     kendo.culture("zh-TW");
@@ -178,11 +178,9 @@ function Check_date() {
     container.kendoValidator({
         rules: {
             greaterdate: function (input) {
-                //console.log(input.val());
                 if (input.is("[data-greaterdate-msg]") && input.val() != "") {
                     var date = kendo.parseDate(input.val()),
                         otherDate = kendo.parseDate($("[name='" + input.data("greaterdateField") + "']").val());
-                    //console.log(input.val());
                     return otherDate == null || otherDate.getTime() < date.getTime();
                 }
                 return true;
@@ -240,7 +238,6 @@ function Insert() {
 
     $("#add_book").click(function () {
         document.getElementById("book_form").reset();
-        var validator = $("#book_form").data("kendoValidator");
         $("#bought_datepicker").kendoDatePicker({
             value: new Date(),
             format: "yyyy-MM-dd",
@@ -273,7 +270,7 @@ function Insert() {
 //新增書籍資料
 function Insert_Data() {
     $("#save_book").click(function () {
-        var validator = $("#book_form").data("kendoValidator");
+        var validator = $("#book_form").kendoValidator().data("kendoValidator");
         var book_name = $("#book_name").val();
         for (var i = 0; i < bookCategoryList.length; i++) {
             if ($("#book_category").val() == bookCategoryList[i].value) {
@@ -299,6 +296,11 @@ function Insert_Data() {
 
         bookDataFromLocalStorage = JSON.parse(localStorage.getItem('bookData'));
         var book_id = Object.keys(bookDataFromLocalStorage).map(function (_) { return bookDataFromLocalStorage[_]; });
+        console.log(book_id);
+        var length = book_id.length - 1;
+        console.log(length);
+        console.log(book_id[length]["BookId"]);
+        var book_Id_val = length + 2;
         if (validator.validate()) {
             var data = $("#book_grid").data("kendoGrid").dataSource;
             var data_add = data.add({

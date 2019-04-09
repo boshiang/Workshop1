@@ -31,31 +31,38 @@
                         </li>
                         <li>
                             <label class="required">圖書類別</label>
-                            <select id="book_category" style="width:100%" required validationMessage="這是必填欄位"></select>
+                            <select id="book_category" style="width:100%" name="book_category" required validationMessage="這是必填欄位"></select>
+                            <span class="k-invalid-msg" data-for="book_category"></span>
                         </li>
                         <li>
                             <label class="required">書名</label>
                             <input id="book_name" type="text" class="k-textbox" name="book_name" style="width:100%" required validationMessage="這是必填欄位" />
+                            <span class="k-invalid-msg" data-for="book_name"></span>
                         </li>
                         <li>
                             <label class="required">作者</label>
                             <input id="book_author" type="text" class="k-textbox" name="book_author" style="width:100%" required validationMessage="這是必填欄位" />
+                            <span class="k-invalid-msg" data-for="book_author"></span>
                         </li>
                         <li>
                             <label class="required">購買日期</label>
                             <input id="bought_datepicker" data-role='datepicker' name="bought_datepicker" style="width:100%" data-type="date" required validationMessage="請輸入正確日期" />
+                            <span class="k-invalid-msg" data-for="bought_datepicker"></span>
                         </li>
                         <li>
                             <label>送達日期</label>
                             <input id="delivered_datepicker" data-role='datepicker' data-type="date" name="delivered_datepicker" style="width:100%" data-greaterdate-field="bought_datepicker" data-greaterdate-msg='時間不得早於購買日期' />
+                            <span class="k-invalid-msg" data-for="delivered_datepicker"></span>
                         </li>
                         <li>
                             <label class="required">金額</label>
                             <input id="book_price" name="book_price" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位" />
+                            <span class="k-invalid-msg" data-for="book_price"></span>
                         </li>
                         <li>
                             <label class="required">數量</label>
                             <input id="book_amount" name="book_amount" type="text" style="text-align: right;width:100%;padding-right: 3px;" required validationMessage="這是必填欄位" />
+                            <span class="k-invalid-msg" data-for="book_amount"></span>
                         </li>
                         <li>
                             <span style="float:right;">
@@ -71,7 +78,6 @@
 
             <button type="button" id="add_book" class="k-button k-primary btn-add-book">新增書籍</button><br>
             <!--<button type="button" id="clear_localstorage" class="k-button k-primary">清除localstorage</button><br>-->
-            <!--<select id="products"></select>-->
             <script id="template" type="text/x-kendo-template">
                 <label class="search-label" for="searchBox"> </label>
                 <input id="searchBox" type="search" class='k-textbox' placeholder="我想要找..." style="width:600px" />
